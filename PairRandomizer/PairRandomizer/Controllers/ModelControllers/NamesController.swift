@@ -8,20 +8,13 @@
 import Foundation
 
 
-enum NamesError: Error {
-    case needToLoadFromPS
-}
-
-
 class NamesController {
     
     static let shared = NamesController()
     
     private(set) var names = Names()
 
-    
     // MARK: - CRUD Functions
-    
     //add new name
     func addNewName(_ name:String) {
         names.baseNames.append(name)
