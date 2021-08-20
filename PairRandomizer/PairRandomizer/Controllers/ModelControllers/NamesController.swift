@@ -22,7 +22,7 @@ class NamesController {
     
     // MARK: - CRUD Functions
     
-    //Create
+    //add new name
     func addNewName(_ name:String) {
         names.baseNames.append(name)
         

@@ -57,7 +57,19 @@ extension PairListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Group \(section + 1)"
+        
+        switch randomized2dArray[section].count {
+        case groupSize:
+            return "Group \(section + 1)"
+        case 1...groupSize:
+            return "Group \(section + 1) (missing)"
+        case 0:
+            return nil
+        default:
+            print("Unexpected case in \(#function)")
+            return nil
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,7 +97,8 @@ extension PairListViewController: UITableViewDelegate, UITableViewDataSource {
             NamesController.shared.updateRandom2DArrWith(randomized2dArray)
             NamesController.shared.removeNamefromBaseArr(removedPerson)
             
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.reloadSections([indexPath.section], with: .none)
         }
         
     }///End of  editing style
