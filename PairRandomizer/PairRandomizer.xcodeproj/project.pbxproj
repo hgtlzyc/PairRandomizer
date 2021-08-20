@@ -13,6 +13,8 @@
 		E95FB96926CFFDAF00BDF0CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E95FB96826CFFDAF00BDF0CD /* Assets.xcassets */; };
 		E95FB96C26CFFDAF00BDF0CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E95FB96A26CFFDAF00BDF0CD /* LaunchScreen.storyboard */; };
 		E95FB97A26D003F900BDF0CD /* PairListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FB97926D003F900BDF0CD /* PairListViewController.swift */; };
+		E95FB97F26D0088A00BDF0CD /* NamesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FB97E26D0088900BDF0CD /* NamesController.swift */; };
+		E95FB98226D0097300BDF0CD /* Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95FB98126D0097300BDF0CD /* Names.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		E95FB96B26CFFDAF00BDF0CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E95FB96D26CFFDAF00BDF0CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E95FB97926D003F900BDF0CD /* PairListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairListViewController.swift; sourceTree = "<group>"; };
+		E95FB97E26D0088900BDF0CD /* NamesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamesController.swift; sourceTree = "<group>"; };
+		E95FB98126D0097300BDF0CD /* Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Names.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +60,10 @@
 		E95FB95E26CFFDAD00BDF0CD /* PairRandomizer */ = {
 			isa = PBXGroup;
 			children = (
-				E95FB97626CFFDF500BDF0CD /* Views */,
+				E95FB98026D0096000BDF0CD /* Model */,
 				E95FB97426CFFDD100BDF0CD /* Controllers */,
+				E95FB97626CFFDF500BDF0CD /* Views */,
+				E95FB98326D00DB000BDF0CD /* Helper+Extensions */,
 				E95FB97326CFFDC100BDF0CD /* Supports */,
 			);
 			path = PairRandomizer;
@@ -78,6 +84,7 @@
 		E95FB97426CFFDD100BDF0CD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E95FB97D26D0086400BDF0CD /* ModelControllers */,
 				E95FB97526CFFDEB00BDF0CD /* ViewControllers */,
 			);
 			path = Controllers;
@@ -105,6 +112,29 @@
 				E95FB96526CFFDAD00BDF0CD /* Main.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		E95FB97D26D0086400BDF0CD /* ModelControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E95FB97E26D0088900BDF0CD /* NamesController.swift */,
+			);
+			path = ModelControllers;
+			sourceTree = "<group>";
+		};
+		E95FB98026D0096000BDF0CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E95FB98126D0097300BDF0CD /* Names.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E95FB98326D00DB000BDF0CD /* Helper+Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Helper+Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +207,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E95FB98226D0097300BDF0CD /* Names.swift in Sources */,
+				E95FB97F26D0088A00BDF0CD /* NamesController.swift in Sources */,
 				E95FB96026CFFDAD00BDF0CD /* AppDelegate.swift in Sources */,
 				E95FB96226CFFDAD00BDF0CD /* SceneDelegate.swift in Sources */,
 				E95FB97A26D003F900BDF0CD /* PairListViewController.swift in Sources */,
