@@ -13,6 +13,8 @@ class PairListViewController: UIViewController {
     
     var randomized2dArray = [[String]]()
     
+    var groupSize: Int = 2
+    
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +37,7 @@ class PairListViewController: UIViewController {
     
     @IBAction func randomizeButtonTapped(_ sender: Any) {
         
-        NamesController.shared.generateNewRandomList(groupSize: 2)
+        NamesController.shared.generateNewRandomList(groupSize: groupSize)
         laod2DArrFromNamesController(isInitialLoad: false)
         
     }///End of  randomizeButtonTapped
@@ -121,8 +123,10 @@ extension PairListViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let addAction = UIAlertAction(title: "Add", style: .default) { _ in
             guard let personName = alerVC.textFields?.first?.text, !personName.isEmpty else { return }
+            
             NamesController.shared.addNewName(personName)
-            NamesController.shared.generateNewRandomList(groupSize: 2)
+            NamesController.shared.generateNewRandomList(groupSize: self.groupSize)
+            
             self.laod2DArrFromNamesController(isInitialLoad: false)
         }
         alerVC.addAction(cancelAction)

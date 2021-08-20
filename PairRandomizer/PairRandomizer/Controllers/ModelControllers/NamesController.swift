@@ -30,6 +30,7 @@ class NamesController {
     }
     
     func generateNewRandomList(groupSize: Int) {
+        
         let randomArr = names.baseNames.shuffled()
         let newRandomized2DArray = randomArr.chunked2DArray(groupSize: groupSize)
         names.randomized2DNamesArr = newRandomized2DArray
