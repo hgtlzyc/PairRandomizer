@@ -12,9 +12,12 @@ class PairListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    var randomized2dArray = [[String]]()
+    @IBOutlet weak var editBarButton: UIBarButtonItem!
     
-    var groupSize: Int = 2
+    // MARK: - Properties
+    private var randomized2dArray = [[String]]()
+    
+    private var groupSize: Int = 2
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -27,21 +30,27 @@ class PairListViewController: UIViewController {
         setupViews()
     }
     
-    func setupViews() {
-        tableView.separatorStyle = .none
+    // MARK: - IBActions
+    @IBAction func editButtonTapped(_ sender: Any) {
+        tableView.isEditing.toggle()
+        editBarButton.title = tableView.isEditing ? "Done" : "Edit"
     }
     
     @IBAction func addNewNameTapped(_ sender: Any) {
-        presentAddNewNameAlert()
+        presentTwoActionsAlertFor(mode: .addNewPerson)
         
-    }///End of  addNewNameTapepd
+    }
+    
+    @IBAction func changeGroupSizeButtonTapped(_ sender: Any) {
+        presentTwoActionsAlertFor(mode: .changeGroupSize)
+        
+    }
     
     @IBAction func randomizeButtonTapped(_ sender: Any) {
-        
         NamesController.shared.generateNewRandomList(groupSize: groupSize)
         laod2DArrFromNamesController(isInitialLoad: false)
         
-    }///End of  randomizeButtonTapped
+    }
     
 }///End of  PairListViewController
 
@@ -60,6 +69,8 @@ extension PairListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         switch randomized2dArray[section].count {
+        case let x where x > groupSize:
+            return "Group \(section + 1) (extra)"
         case groupSize:
             return "Group \(section + 1)"
         case 1...groupSize:
@@ -80,6 +91,20 @@ extension PairListViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    // MARK: - Rearrange Related
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        NamesController.shared.moveName(
+            from: (section: sourceIndexPath.section, row: sourceIndexPath.row),
+            to: (section: destinationIndexPath.section, row: destinationIndexPath.row)
+        )
+        
+        laod2DArrFromNamesController(isInitialLoad: false)
+    }///End of  moveRowAt
     
     // MARK: - delete related
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -106,46 +131,116 @@ extension PairListViewController: UITableViewDelegate, UITableViewDataSource {
 
 }///End of  tableView delegate Extension
 
-// MARK: - Data Related
+// MARK: - Load Data Related
 extension PairListViewController {
     
-    func laod2DArrFromNamesController(isInitialLoad: Bool) {
+    private func laod2DArrFromNamesController(isInitialLoad: Bool) {
+    
         switch isInitialLoad {
         case true:
             NamesController.shared.loadFromPeristenceStore()
-            randomized2dArray = NamesController.shared.names.randomized2DNamesArr
+            load2DArray()
             
         case false:
-            randomized2dArray = NamesController.shared.names.randomized2DNamesArr
+            load2DArray()
             tableView.reloadData()
         }///End of  switch
     
     }///End of  laodDataFromNamesController
     
+    private func load2DArray(){
+        randomized2dArray = NamesController.shared.names.randomized2DNamesArr
+        if let targetGroupSize = NamesController.shared.names.targetGroupSize {
+            groupSize = targetGroupSize
+            title = "Group Size 👉🏻 \(groupSize)"
+        }
+    }
+    
 }///End of  data related extension
+
+// MARK: - View Setup/Update Related
+extension PairListViewController {
+    
+    private func setupViews() {
+        tableView.separatorStyle = .none
+        tableView.alwaysBounceVertical = false
+    }
+    
+}
 
 // MARK: - Alert Related
 extension PairListViewController {
     
-    func presentAddNewNameAlert() {
-        let alerVC = UIAlertController(title: "Add Person", message: "Add someone new to the list", preferredStyle: .alert)
+    private enum AlerPresentMode {
+        case addNewPerson
+        case changeGroupSize
+    }
+    
+    private func presentTwoActionsAlertFor(mode: AlerPresentMode) {
+        var alertTitle: String
+        var alertMessage: String
+        var confirmActionTitle: String
         
-        alerVC.addTextField { txField in
-            txField.placeholder = "Full Name"
-        }
+        switch mode {
+        case .addNewPerson:
+            alertTitle = "Add Person"
+            alertMessage = "Add someone new to the list"
+            confirmActionTitle = "Add"
+            
+        case .changeGroupSize:
+            alertTitle = "Change Group Size"
+            alertMessage = "Enter Size Here"
+            confirmActionTitle = "Change"
+            
+        }///End of  switch model
+        
+        let alerVC = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        
+        var nameTxField: UITextField?
+        var groupSizeTxField: UITextField?
+        
+        switch mode {
+        case .addNewPerson:
+            alerVC.addTextField { txField in
+                nameTxField = txField
+                txField.placeholder = "Full Name (Required)"
+            }
+            
+        case .changeGroupSize:
+            alerVC.addTextField { txField in
+                groupSizeTxField = txField
+                txField.placeholder = "Group Size"
+            }
+            
+        }///End of  switch mode for txField
+        
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-            guard let personName = alerVC.textFields?.first?.text, !personName.isEmpty else { return }
+        let confirmAction = UIAlertAction(title: confirmActionTitle, style: .default) { _ in
+            defer {
+                self.laod2DArrFromNamesController(isInitialLoad: false)
+            }
             
-            NamesController.shared.addNewName(personName)
-            NamesController.shared.generateNewRandomList(groupSize: self.groupSize)
+            switch mode {
+            case .addNewPerson:
+                guard let personName = nameTxField?.text, !personName.isEmpty else { return }
+                NamesController.shared.addNewName(personName)
+                break
+                    
+            case .changeGroupSize:
+                guard let targetSizeTx = groupSizeTxField?.text,
+                      let targetGroupSizeInt = Int(targetSizeTx),
+                      targetGroupSizeInt > 0 else { return }
+                NamesController.shared.saveGroupSize(targetGroupSizeInt)
+                
+            }///End of  switch mode
             
-            self.laod2DArrFromNamesController(isInitialLoad: false)
-        }
+        }///End of  ConfirmAction
+        
         alerVC.addAction(cancelAction)
-        alerVC.addAction(addAction)
+        alerVC.addAction(confirmAction)
+        
         present(alerVC, animated: true)
-    }
+    }///End of  presentChangeSettingAlert
 
 }///End of  alert related Extension

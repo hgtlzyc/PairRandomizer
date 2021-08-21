@@ -19,6 +19,13 @@ class NamesController {
     func addNewName(_ name:String) {
         names.baseNames.append(name)
         
+        if let _ = names.randomized2DNamesArr.last {
+            let count = names.randomized2DNamesArr.count
+            names.randomized2DNamesArr[count - 1].append(name)
+        } else {
+            print("UnExpected case in \(#function)")
+        }
+        
         saveToPersistanceStore()
     }
     
@@ -31,6 +38,13 @@ class NamesController {
         saveToPersistanceStore()
     }
     
+    //save group size
+    func saveGroupSize(_ size: Int) {
+        names.targetGroupSize = size
+        
+        saveToPersistanceStore()
+    }
+    
     //update, delete
     func removeNamefromBaseArr(_ name: String) {
         names.baseNames = names.baseNames.filter { $0 != name}
@@ -40,6 +54,15 @@ class NamesController {
     
     func updateRandom2DArrWith(_ new2DArr: [[String]]) {
         names.randomized2DNamesArr = new2DArr
+        
+        saveToPersistanceStore()
+    }
+    
+    //update, move
+    func moveName(from: (section: Int, row: Int), to: (section: Int, row: Int)) {
+        let nameMoved = names.randomized2DNamesArr[from.section][from.row]
+        names.randomized2DNamesArr[from.section].remove(at: from.row)
+        names.randomized2DNamesArr[to.section].insert(nameMoved, at: to.row)
         
         saveToPersistanceStore()
     }

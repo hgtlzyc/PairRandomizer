@@ -9,6 +9,7 @@ import Foundation
 
 class Names: Codable {
     
+    var targetGroupSize: Int?
     var baseNames: [String]
     var randomized2DNamesArr: [[String]]
     
