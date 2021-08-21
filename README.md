@@ -118,4 +118,4 @@ extension PairListViewController {
 
 ```
 
-[Names Controller Link](https://github.com/hgtlzyc/PairRandomizer/blob/main/PairRandomizer/PairRandomizer/Controllers/ModelControllers/NamesController.swift)
+Names Controller [Link](https://github.com/hgtlzyc/PairRandomizer/blob/main/PairRandomizer/PairRandomizer/Controllers/ModelControllers/NamesController.swift)
