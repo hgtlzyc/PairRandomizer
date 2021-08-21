@@ -1,5 +1,5 @@
 # PairRandomizer
-### My solution to the code challange
+### My solution to the challange assessment
 - Generate random groups based on the target group size
 - Change target group size
 - Rearrange the list
