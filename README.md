@@ -1,11 +1,11 @@
 # PairRandomizer
 ### My solution to the code challange
-![](https://github.com/hgtlzyc/PairRandomizer/blob/d60b063ce473a05d5e284c725942711acde81692/ScreenCapture.gif)
-
 - Generate random groups based on the target group size
 - Rearrange the list
 - Delete/Add Names
 - Persistance 
+
+![](https://github.com/hgtlzyc/PairRandomizer/blob/d60b063ce473a05d5e284c725942711acde81692/ScreenCapture.gif)
 
 Code Snippet:
 ``` swift
